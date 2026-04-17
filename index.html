@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Packs · Tiles Concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #111;
+    --dark: #434343;
+    --mid: #888;
+    --light: #d8d8d8;
+    --bg: #faf9f7;
+    --white: #fff;
+    --accent: #434343;
+    --hover: #f0ede8;
+    --selected-border: #111;
+    --result-bg: #111;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: var(--bg);
+    color: var(--black);
+    font-weight: 300;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 40px;
+    border-bottom: 1px solid var(--light);
+    background: var(--white);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  header img { height: 32px; }
+  header a {
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--dark);
+    text-decoration: none;
+    border-bottom: 1px solid var(--light);
+    padding-bottom: 2px;
+    transition: border-color 0.2s;
+  }
+  header a:hover { border-color: var(--dark); }
+
+  /* ── HERO ── */
+  .hero {
+    text-align: center;
+    padding: 60px 40px 48px;
+    border-bottom: 1px solid var(--light);
+    background: var(--white);
+  }
+  .hero-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(36px, 6vw, 64px);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+  .hero h1 em { font-style: italic; }
+  .hero p {
+    font-size: 14px;
+    color: var(--dark);
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  /* ── MAIN LAYOUT ── */
+  .main { max-width: 1200px; margin: 0 auto; padding: 48px 24px 80px; }
+
+  /* ── STEPS ── */
+  .steps {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 40px;
+  }
+  @media (max-width: 768px) {
+    .steps { grid-template-columns: 1fr; gap: 32px; }
+    header { padding: 16px 20px; }
+    .hero { padding: 40px 20px 32px; }
+    .main { padding: 32px 16px 60px; }
+  }
+
+  .step-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .step-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--light);
+  }
+  .step-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px; height: 20px;
+    border: 1px solid var(--light);
+    border-radius: 50%;
+    font-size: 10px;
+    color: var(--dark);
+    flex-shrink: 0;
+  }
+
+  /* ── STEP 1: MODEL SELECTOR ── */
+  .model-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+  .model-tab {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border: 1px solid var(--light);
+    background: transparent;
+    cursor: pointer;
+    color: var(--dark);
+    transition: all 0.2s;
+    border-radius: 2px;
+  }
+  .model-tab:hover { border-color: var(--dark); color: var(--black); }
+  .model-tab.active {
+    border-color: var(--black);
+    background: var(--black);
+    color: var(--white);
+  }
+
+  .color-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+  }
+  .color-card {
+    cursor: pointer;
+    border: 1.5px solid transparent;
+    border-radius: 4px;
+    overflow: hidden;
+    transition: all 0.2s;
+    background: var(--white);
+  }
+  .color-card:hover { border-color: var(--mid); }
+  .color-card.selected {
+    border-color: var(--black);
+    box-shadow: 0 0 0 1px var(--black);
+  }
+  .color-card img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    display: block;
+  }
+  .color-card-label {
+    padding: 6px 8px;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--dark);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-top: 1px solid #f0f0f0;
+  }
+
+  /* ── STEP 2: MEASURES ── */
+  .step-right { display: flex; flex-direction: column; gap: 24px; }
+
+  .selected-preview {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background: var(--white);
+    border: 1px solid var(--light);
+    border-radius: 4px;
+    min-height: 80px;
+  }
+  .selected-preview img {
+    width: 64px; height: 64px;
+    object-fit: cover;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .selected-preview-placeholder {
+    width: 64px; height: 64px;
+    background: #f0ede8;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 20px;
+    color: var(--light);
+  }
+  .preview-info { flex: 1; }
+  .preview-name {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+  .preview-name em { font-style: italic; }
+  .preview-meta {
+    font-size: 11px;
+    color: var(--mid);
+    letter-spacing: 0.06em;
+  }
+  .preview-price {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--black);
+    text-align: right;
+  }
+  .preview-price-label {
+    font-size: 10px;
+    color: var(--mid);
+    letter-spacing: 0.06em;
+    text-align: right;
+  }
+
+  /* ── INPUTS ── */
+  .input-group { display: flex; flex-direction: column; gap: 8px; }
+  .input-label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--dark);
+  }
+  .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field-label { font-size: 11px; color: var(--mid); }
+
+  input[type="number"] {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--light);
+    background: var(--white);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--black);
+    outline: none;
+    border-radius: 2px;
+    transition: border-color 0.2s;
+    -moz-appearance: textfield;
+  }
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+  input[type="number"]:focus { border-color: var(--black); }
+  input[type="number"]::placeholder { color: var(--light); }
+
+  .optional-label {
+    font-size: 11px;
+    color: var(--mid);
+    margin-top: -4px;
+  }
+
+  /* ── RESULT ── */
+  .result-panel {
+    background: var(--black);
+    color: var(--white);
+    border-radius: 4px;
+    padding: 28px;
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+  .result-panel.visible { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  .result-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: #333;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .result-cell {
+    background: var(--black);
+    padding: 18px 16px;
+    text-align: center;
+  }
+  .result-cell-label {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 8px;
+  }
+  .result-cell-value {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 32px;
+    font-weight: 300;
+    line-height: 1;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+  .result-cell-unit {
+    font-size: 10px;
+    color: #888;
+    letter-spacing: 0.1em;
+  }
+  .result-cell.highlight .result-cell-value { font-size: 40px; }
+  .result-cell.highlight .result-cell-label { color: #aaa; }
+  .result-cell.highlight .result-cell-unit { color: #aaa; }
+
+  .result-summary {
+    font-size: 13px;
+    color: #888;
+    line-height: 1.6;
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #333;
+  }
+  .result-summary strong { color: var(--white); font-weight: 400; }
+
+  .result-price-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .result-price-label { font-size: 11px; color: #888; letter-spacing: 0.1em; text-transform: uppercase; }
+  .result-price-value {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--white);
+  }
+
+  .btn-buy {
+    display: block;
+    width: 100%;
+    padding: 16px;
+    background: var(--white);
+    color: var(--black);
+    border: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background 0.2s, color 0.2s;
+  }
+  .btn-buy:hover { background: #f0ede8; }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    text-align: center;
+    padding: 40px 24px;
+    color: var(--mid);
+    border: 1px dashed var(--light);
+    border-radius: 4px;
+  }
+  .empty-state-icon { font-size: 32px; margin-bottom: 12px; opacity: 0.4; }
+  .empty-state p { font-size: 13px; line-height: 1.6; }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 32px 24px;
+    border-top: 1px solid var(--light);
+    font-size: 11px;
+    color: var(--mid);
+    letter-spacing: 0.08em;
+  }
+  footer a { color: var(--dark); text-decoration: none; }
+  footer a:hover { color: var(--black); }
+
+  /* ── NOTE ── */
+  .note {
+    font-size: 11px;
+    color: var(--mid);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+  .note::before { content: '※'; flex-shrink: 0; }
+</style>
+</head>
+<body>
+
+<header>
+  <img src="img/logo.png" alt="Tiles Concept">
+  <a href="https://www.tilesconcept.com.ar" target="_blank">Ver tienda →</a>
+</header>
+
+<div class="hero">
+  <p class="hero-label">Herramienta de compra</p>
+  <h1>Calculá tus <em>packs</em></h1>
+  <p>Elegí el modelo y color que buscás, ingresá las medidas de tu pared y te decimos exactamente cuántos packs necesitás.</p>
+</div>
+
+<div class="main">
+  <div class="steps">
+
+    <!-- STEP 1 -->
+    <div class="step-left">
+      <div class="step-label">
+        <span class="step-number">1</span>
+        Elegí el modelo y color
+      </div>
+
+      <div class="model-tabs" id="modelTabs"></div>
+      <div class="color-grid" id="colorGrid"></div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step-right">
+      <div>
+        <div class="step-label">
+          <span class="step-number">2</span>
+          Producto seleccionado
+        </div>
+        <div class="selected-preview" id="selectedPreview">
+          <div class="selected-preview-placeholder">◻</div>
+          <div class="preview-info">
+            <div class="preview-name" style="color:#bbb; font-family:'Montserrat',sans-serif; font-size:13px;">Ningún producto seleccionado</div>
+            <div class="preview-meta">Elegí un modelo y color</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="step-label">
+          <span class="step-number">3</span>
+          Medidas de tu pared
+        </div>
+
+        <div class="input-group">
+          <div class="input-row">
+            <div class="field">
+              <label class="field-label">Ancho (m)</label>
+              <input type="number" id="ancho" placeholder="ej: 3.50" min="0" step="0.01" oninput="calcular()">
+            </div>
+            <div class="field">
+              <label class="field-label">Alto (m)</label>
+              <input type="number" id="alto" placeholder="ej: 2.40" min="0" step="0.01" oninput="calcular()">
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Descontar puertas / ventanas (m²) — opcional</label>
+            <input type="number" id="descuento" placeholder="ej: 1.20" min="0" step="0.01" oninput="calcular()">
+          </div>
+          <p class="note">Recomendamos siempre sumar un 10% extra para cortes y ajustes. Ya está incluido en el cálculo.</p>
+        </div>
+      </div>
+
+      <!-- RESULT -->
+      <div id="resultPanel" class="result-panel">
+        <div class="result-grid">
+          <div class="result-cell">
+            <div class="result-cell-label">Superficie neta</div>
+            <div class="result-cell-value" id="resM2">—</div>
+            <div class="result-cell-unit">m²</div>
+          </div>
+          <div class="result-cell">
+            <div class="result-cell-label">Con 10% extra</div>
+            <div class="result-cell-value" id="resM2Extra">—</div>
+            <div class="result-cell-unit">m²</div>
+          </div>
+          <div class="result-cell highlight">
+            <div class="result-cell-label">Packs a comprar</div>
+            <div class="result-cell-value" id="resPacks">—</div>
+            <div class="result-cell-unit">packs × 10 placas</div>
+          </div>
+        </div>
+
+        <div class="result-summary">
+          Necesitás <strong id="sumPacks">—</strong> pack(s) de <strong id="sumModel">—</strong> para cubrir <strong id="sumM2">—</strong> m² de pared (incluyendo el 10% de margen para recortes).
+        </div>
+
+        <div class="result-price-row">
+          <span class="result-price-label">Total estimado</span>
+          <span class="result-price-value" id="resTotal">—</span>
+        </div>
+
+        <a href="#" id="btnBuy" class="btn-buy" target="_blank">Ir al producto →</a>
+      </div>
+
+      <div id="emptyState" class="empty-state">
+        <div class="empty-state-icon">◻</div>
+        <p>Seleccioná un modelo y color, luego ingresá las medidas de tu pared para ver el resultado.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2025 <a href="https://www.tilesconcept.com.ar" target="_blank">Tiles Concept</a> · Azulejos autoadhesivos 3D</p>
+</footer>
+
+<script>
+const PRODUCTOS = [
+  { modelo:'CAIRO', color:'White',      precio:89900, cobertura:0.66, img:'img/cairo-white.jpg',       url:'https://www.tilesconcept.com.ar/productos/white-cairo-azulejos-autoadhesivos-3d/' },
+  { modelo:'CAIRO', color:'Green',      precio:89900, cobertura:0.66, img:'img/cairo-green.jpg',       url:'https://www.tilesconcept.com.ar/productos/green-cairo-azulejos-autoadhesivos-3d/' },
+  { modelo:'CAIRO', color:'Pink',       precio:89900, cobertura:0.66, img:'img/cairo-pink.jpg',        url:'https://www.tilesconcept.com.ar/productos/cairo-pink-azulejos-autoadhesivos-3d/' },
+  { modelo:'CAIRO', color:'Light Pink', precio:89900, cobertura:0.66, img:'img/cairo-light-pink.jpg',  url:'https://www.tilesconcept.com.ar/productos/cairo-light-pink-azulejos-autoadhesivos-3d/' },
+  { modelo:'CAIRO', color:'Mink',       precio:89900, cobertura:0.66, img:'img/cairo-mink.jpg',        url:'https://www.tilesconcept.com.ar/productos/cairo-mink-azulejos-autoadhesivos-3d/' },
+  { modelo:'CAIRO', color:'Deep Red',   precio:89900, cobertura:0.66, img:'img/cairo-deep-red.jpg',    url:'https://www.tilesconcept.com.ar/productos/cairo-deep-red-azulejos-autoadhesivos-3d/' },
+  { modelo:'CAIRO', color:'Black',      precio:89900, cobertura:0.66, img:'img/cairo-black.jpg',       url:'https://www.tilesconcept.com.ar/productos/cairo-black-azulejos-autoadhesivos-3d/' },
+  { modelo:'CAIRO', color:'Dark',       precio:89900, cobertura:0.66, img:'img/cairo-dark.jpg',        url:'https://www.tilesconcept.com.ar/productos/cairo-dark-azulejos-autoadhesivos-3d/' },
+  { modelo:'CAIRO', color:'Blue',       precio:89900, cobertura:0.66, img:'img/cairo-blue.jpg',        url:'https://www.tilesconcept.com.ar/productos/cairo-blue-azulejos-autoadhesivos-3d/' },
+
+  { modelo:'KOI',   color:'Green',  precio:109900, cobertura:0.90, img:'img/koi-green.jpg',   url:'https://www.tilesconcept.com.ar/productos/koi-green-azulejos-autoadhesivos-3d/' },
+  { modelo:'KOI',   color:'Sakura', precio:109900, cobertura:0.90, img:'img/koi-sakura.jpg',  url:'https://www.tilesconcept.com.ar/productos/koi-sakura-azulejos-autoadhesivos-3d/' },
+  { modelo:'KOI',   color:'Pearl',  precio:109900, cobertura:0.90, img:'img/koi-pearl.jpg',   url:'https://www.tilesconcept.com.ar/productos/koi-pearl-azulejos-autoadhesivos-3d/' },
+
+  { modelo:'QUETZAL', color:'Pink',      precio:109900, cobertura:0.90, img:'img/quetzal-pink.jpg',      url:'https://www.tilesconcept.com.ar/productos/quetzal-pink-azulejos-autoadhesivos-3d/' },
+  { modelo:'QUETZAL', color:'Sand',      precio:109900, cobertura:0.90, img:'img/quetzal-sand.jpg',      url:'https://www.tilesconcept.com.ar/productos/quetzal-sand-azulejos-autoadhesivos-3d/' },
+  { modelo:'QUETZAL', color:'Mint',      precio:109900, cobertura:0.90, img:'img/quetzal-mint.jpg',      url:'https://www.tilesconcept.com.ar/productos/quetzal-mint-azulejos-autoadhesivos-3d/' },
+  { modelo:'QUETZAL', color:'Azure',     precio:109900, cobertura:0.90, img:'img/quetzal-azure.jpg',     url:'https://www.tilesconcept.com.ar/productos/quetzal-azure-azulejos-autoadhesivos-3d/' },
+  { modelo:'QUETZAL', color:'Peony',     precio:109900, cobertura:0.90, img:'img/quetzal-peony.jpg',     url:'https://www.tilesconcept.com.ar/productos/quetzal-peony-azulejos-autoadhesivos-3d/' },
+  { modelo:'QUETZAL', color:'Pure',      precio:109900, cobertura:0.90, img:'img/quetzal-pure.jpg',      url:'https://www.tilesconcept.com.ar/productos/quetzal-pure-azulejos-autoadhesivos-3d/' },
+  { modelo:'QUETZAL', color:'Cake Pink', precio:109900, cobertura:0.90, img:'img/quetzal-cake-pink.jpg', url:'https://www.tilesconcept.com.ar/productos/quetzal-cake-pink-azulejos-autoadhesivos-3d/' },
+
+  { modelo:'GIZA', color:'Camel',  precio:109900, cobertura:0.90, img:'img/giza-camel.jpg',  url:'https://www.tilesconcept.com.ar/productos/giza-camel-azulejos-autoadhesivos-3d/' },
+  { modelo:'GIZA', color:'Lumen',  precio:109900, cobertura:0.90, img:'img/giza-lumen.jpg',  url:'https://www.tilesconcept.com.ar/productos/giza-lumen-azulejos-autoadhesivos-3d/' },
+  { modelo:'GIZA', color:'Jade',   precio:109900, cobertura:0.90, img:'img/giza-jade.jpg',   url:'https://www.tilesconcept.com.ar/productos/giza-jade-azulejos-autoadhesivos-3d/' },
+  { modelo:'GIZA', color:'Quartz', precio:109900, cobertura:0.90, img:'img/giza-quartz.jpg', url:'https://www.tilesconcept.com.ar/productos/giza-quartz-azulejos-autoadhesivos-3d/' },
+  { modelo:'GIZA', color:'Onyx',   precio:109900, cobertura:0.90, img:'img/giza-onyx.jpg',   url:'https://www.tilesconcept.com.ar/productos/giza-onyx-azulejos-autoadhesivos-3d/' },
+
+  { modelo:'MOROCCO', color:'Bloom',  precio:109900, cobertura:0.90, img:'img/morocco-bloom.jpg',  url:'https://www.tilesconcept.com.ar/productos/morocco-bloom-azulejos-autoadhesivos-3d/' },
+  { modelo:'MOROCCO', color:'Kasbah', precio:109900, cobertura:0.90, img:'img/morocco-kasbah.jpg', url:'https://www.tilesconcept.com.ar/productos/morocco-kasbah-azulejos-autoadhesivos-3d/' },
+
+  { modelo:'DOHA', color:'Midnight',  precio:109900, cobertura:0.90, img:'img/doha-midnight.jpg',  url:'https://www.tilesconcept.com.ar/productos/doha-midnight-azulejos-autoadhesivos-3d/' },
+  { modelo:'DOHA', color:'Moonlight', precio:109900, cobertura:0.90, img:'img/doha-moonlight.jpg', url:'https://www.tilesconcept.com.ar/productos/doha-moon-azulejos-autoadhesivos-3d/' },
+
+  { modelo:'ZAYA', color:'Oak', precio:109900, cobertura:0.90, img:'img/zaya-oak.jpg', url:'https://www.tilesconcept.com.ar/productos/zaya-oak-azulejos-autoadhesivos-3d/' },
+
+  { modelo:'LISBOA', color:'Artic White', precio:79900, cobertura:0.52, img:'img/lisboa-artic-white.jpg', url:'https://www.tilesconcept.com.ar/productos/lisboa-arctic-white-azulejos-autoadhesivos-3d/' },
+  { modelo:'LISBOA', color:'Mocca',       precio:79900, cobertura:0.52, img:'img/lisboa-mocca.jpg',       url:'https://www.tilesconcept.com.ar/productos/lisboa-mocca-azulejos-autoadhesivos-3d/' },
+  { modelo:'LISBOA', color:'Rose',        precio:79900, cobertura:0.52, img:'img/lisboa-rose.jpg',        url:'https://www.tilesconcept.com.ar/productos/lisboa-rose-azulejos-autoadhesivos-3d/' },
+
+  { modelo:'MEMPHIS', color:'Chess',  precio:79900, cobertura:0.52, img:'img/memphis-chess.jpg',  url:'https://www.tilesconcept.com.ar/productos/memphis-chess-azulejos-autoadhesivos-3d/' },
+  { modelo:'MEMPHIS', color:'Walnut', precio:79900, cobertura:0.52, img:'img/memphis-walnut.jpg', url:'https://www.tilesconcept.com.ar/productos/memphis-walnut-azulejos-autoadhesivos-3d/' },
+  { modelo:'MEMPHIS', color:'Baby',   precio:79900, cobertura:0.52, img:'img/memphis-baby.jpg',   url:'https://www.tilesconcept.com.ar/productos/memphis-baby-azulejos-autoadhesivos-3d/' },
+];
+
+const MODELOS = [...new Set(PRODUCTOS.map(p => p.modelo))];
+let selectedProduct = null;
+let activeModel = MODELOS[0];
+
+function init() {
+  renderTabs();
+  renderColors(activeModel);
+}
+
+function renderTabs() {
+  const container = document.getElementById('modelTabs');
+  container.innerHTML = MODELOS.map(m =>
+    `<button class="model-tab${m === activeModel ? ' active' : ''}" onclick="selectModel('${m}')">${m}</button>`
+  ).join('');
+}
+
+function selectModel(model) {
+  activeModel = model;
+  selectedProduct = null;
+  renderTabs();
+  renderColors(model);
+  updatePreview();
+  calcular();
+}
+
+function renderColors(model) {
+  const prods = PRODUCTOS.filter(p => p.modelo === model);
+  const container = document.getElementById('colorGrid');
+  container.innerHTML = prods.map(p =>
+    `<div class="color-card${selectedProduct === p ? ' selected' : ''}" onclick="selectProduct(${PRODUCTOS.indexOf(p)})">
+      <img src="${p.img}" alt="${p.modelo} ${p.color}" loading="lazy">
+      <div class="color-card-label">${p.color}</div>
+    </div>`
+  ).join('');
+}
+
+function selectProduct(idx) {
+  selectedProduct = PRODUCTOS[idx];
+  renderColors(activeModel);
+  updatePreview();
+  calcular();
+}
+
+function updatePreview() {
+  const el = document.getElementById('selectedPreview');
+  if (!selectedProduct) {
+    el.innerHTML = `
+      <div class="selected-preview-placeholder">◻</div>
+      <div class="preview-info">
+        <div class="preview-name" style="color:#bbb;font-family:'Montserrat',sans-serif;font-size:13px;">Ningún producto seleccionado</div>
+        <div class="preview-meta">Elegí un modelo y color</div>
+      </div>`;
+    return;
+  }
+  const p = selectedProduct;
+  el.innerHTML = `
+    <img src="${p.img}" alt="${p.modelo} ${p.color}">
+    <div class="preview-info">
+      <div class="preview-name">${p.modelo} <em>${p.color}</em></div>
+      <div class="preview-meta">${p.cobertura.toFixed(2)} m² por pack · Pack × 10 placas</div>
+    </div>
+    <div>
+      <div class="preview-price">$${p.precio.toLocaleString('es-AR')}</div>
+      <div class="preview-price-label">por pack</div>
+    </div>`;
+}
+
+function formatARS(n) {
+  return '$' + Math.round(n).toLocaleString('es-AR');
+}
+
+function calcular() {
+  const ancho = parseFloat(document.getElementById('ancho').value);
+  const alto = parseFloat(document.getElementById('alto').value);
+  const descuento = parseFloat(document.getElementById('descuento').value) || 0;
+  const resultPanel = document.getElementById('resultPanel');
+  const emptyState = document.getElementById('emptyState');
+
+  if (!selectedProduct || !ancho || !alto || ancho <= 0 || alto <= 0) {
+    resultPanel.classList.remove('visible');
+    emptyState.style.display = 'block';
+    return;
+  }
+
+  const p = selectedProduct;
+  const neto = Math.max(0, (ancho * alto) - descuento);
+  const conExtra = neto * 1.10;
+  const packs = Math.ceil(conExtra / p.cobertura);
+  const total = packs * p.precio;
+
+  document.getElementById('resM2').textContent = neto.toFixed(2);
+  document.getElementById('resM2Extra').textContent = conExtra.toFixed(2);
+  document.getElementById('resPacks').textContent = packs;
+  document.getElementById('sumPacks').textContent = packs;
+  document.getElementById('sumModel').textContent = p.modelo + ' ' + p.color;
+  document.getElementById('sumM2').textContent = conExtra.toFixed(2);
+  document.getElementById('resTotal').textContent = formatARS(total);
+  document.getElementById('btnBuy').href = p.url;
+
+  emptyState.style.display = 'none';
+  resultPanel.classList.add('visible');
+}
+
+init();
+</script>
+</body>
+</html>
