@@ -33,30 +33,175 @@
     min-height: 100vh;
   }
 
+  a { color: inherit; text-decoration: none; }
+
+  /* ── TOP STRIP ── */
+  .top-strip {
+    background: var(--black);
+    color: var(--white);
+    text-align: center;
+    padding: 8px 16px;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 300;
+  }
+
   /* ── HEADER ── */
-  header {
+  .site-header {
+    background: var(--white);
+    border-bottom: 1px solid var(--light);
+    position: sticky;
+    top: 0;
+    z-index: 200;
+  }
+  .header-inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 24px 40px;
-    border-bottom: 1px solid var(--light);
-    background: var(--white);
-    position: sticky;
-    top: 0;
-    z-index: 100;
+    padding: 18px 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+    gap: 24px;
   }
-  header img { height: 32px; }
-  header a {
+  .header-logo img { height: 36px; display: block; }
+
+  .header-nav {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    flex: 1;
+    justify-content: center;
+  }
+  .nav-item {
+    position: relative;
     font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--black);
+    font-weight: 400;
+    padding: 24px 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    font-family: 'Montserrat', sans-serif;
+  }
+  .nav-item:hover { color: var(--dark); }
+  .nav-item .caret {
+    font-size: 9px;
+    transition: transform 0.2s;
+  }
+  .nav-item:hover .caret { transform: rotate(180deg); }
+
+  .dropdown {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--white);
+    border: 1px solid var(--light);
+    border-radius: 2px;
+    padding: 14px 0;
+    min-width: 220px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.18s, visibility 0.18s;
+    z-index: 300;
+  }
+  .has-dropdown:hover .dropdown { opacity: 1; visibility: visible; }
+  .dropdown a {
+    display: block;
+    padding: 9px 24px;
+    font-size: 11px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--dark);
-    text-decoration: none;
-    border-bottom: 1px solid var(--light);
-    padding-bottom: 2px;
-    transition: border-color 0.2s;
+    font-weight: 300;
+    white-space: nowrap;
+    transition: background 0.15s, color 0.15s;
   }
-  header a:hover { border-color: var(--dark); }
+  .dropdown a:hover { background: var(--hover); color: var(--black); }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .header-actions a {
+    color: var(--black);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+  }
+  .icon-btn svg { width: 18px; height: 18px; stroke: var(--black); fill: none; stroke-width: 1.5; }
+
+  /* ── MOBILE NAV ── */
+  .menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+  }
+  .menu-toggle svg { width: 24px; height: 24px; stroke: var(--black); fill: none; stroke-width: 1.5; }
+
+  @media (max-width: 1024px) {
+    .header-nav { display: none; }
+    .menu-toggle { display: inline-flex; }
+    .header-inner { padding: 14px 20px; }
+  }
+
+  .mobile-nav {
+    display: none;
+    background: var(--white);
+    border-top: 1px solid var(--light);
+    padding: 12px 20px 20px;
+  }
+  .mobile-nav.open { display: block; }
+  .mobile-nav details { border-bottom: 1px solid var(--light); }
+  .mobile-nav details summary {
+    list-style: none;
+    padding: 14px 0;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .mobile-nav details summary::-webkit-details-marker { display: none; }
+  .mobile-nav details[open] summary { color: var(--dark); }
+  .mobile-nav .mobile-link {
+    display: block;
+    padding: 14px 0;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--light);
+  }
+  .mobile-nav .sub-link {
+    display: block;
+    padding: 10px 0 10px 12px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--dark);
+  }
 
   /* ── HERO ── */
   .hero {
@@ -84,15 +229,14 @@
   .hero p {
     font-size: 14px;
     color: var(--dark);
-    max-width: 480px;
+    max-width: 540px;
     margin: 0 auto;
     line-height: 1.7;
   }
 
   /* ── MAIN LAYOUT ── */
-  .main { max-width: 1200px; margin: 0 auto; padding: 48px 24px 80px; }
+  .main { max-width: 1200px; margin: 0 auto; padding: 48px 24px 40px; }
 
-  /* ── STEPS ── */
   .steps {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -101,9 +245,8 @@
   }
   @media (max-width: 768px) {
     .steps { grid-template-columns: 1fr; gap: 32px; }
-    header { padding: 16px 20px; }
     .hero { padding: 40px 20px 32px; }
-    .main { padding: 32px 16px 60px; }
+    .main { padding: 32px 16px 40px; }
   }
 
   .step-label {
@@ -254,17 +397,46 @@
     text-align: right;
   }
 
-  /* ── INPUTS ── */
-  .input-group { display: flex; flex-direction: column; gap: 8px; }
-  .input-label {
+  /* ── WALLS ── */
+  .walls-container { display: flex; flex-direction: column; gap: 14px; }
+
+  .wall-card {
+    background: var(--white);
+    border: 1px solid var(--light);
+    border-radius: 4px;
+    padding: 16px;
+    position: relative;
+  }
+  .wall-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .wall-card-title {
     font-size: 11px;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
     color: var(--dark);
+    font-weight: 500;
   }
-  .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .wall-remove {
+    background: none;
+    border: none;
+    color: var(--mid);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    transition: color 0.15s;
+    padding: 4px 6px;
+  }
+  .wall-remove:hover { color: var(--black); }
+
   .field { display: flex; flex-direction: column; gap: 6px; }
   .field-label { font-size: 11px; color: var(--mid); }
+  .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
 
   input[type="number"] {
     width: 100%;
@@ -285,11 +457,82 @@
   input[type="number"]:focus { border-color: var(--black); }
   input[type="number"]::placeholder { color: var(--light); }
 
-  .optional-label {
+  .btn-add-wall {
+    width: 100%;
+    padding: 14px;
+    background: transparent;
+    border: 1px dashed var(--light);
+    color: var(--dark);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s;
+  }
+  .btn-add-wall:hover {
+    border-color: var(--black);
+    border-style: solid;
+    color: var(--black);
+    background: var(--white);
+  }
+
+  /* ── OPTIONS ── */
+  .options-box {
+    background: var(--white);
+    border: 1px solid var(--light);
+    border-radius: 4px;
+    padding: 16px;
+  }
+  .switch-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .switch-text { flex: 1; }
+  .switch-title {
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--black);
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+  .switch-desc {
     font-size: 11px;
     color: var(--mid);
-    margin-top: -4px;
+    line-height: 1.6;
   }
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background: var(--light);
+    border-radius: 24px;
+    transition: background 0.2s;
+  }
+  .slider::before {
+    content: '';
+    position: absolute;
+    height: 18px; width: 18px;
+    left: 3px; top: 3px;
+    background: var(--white);
+    border-radius: 50%;
+    transition: transform 0.2s;
+  }
+  .switch input:checked + .slider { background: var(--black); }
+  .switch input:checked + .slider::before { transform: translateX(20px); }
 
   /* ── RESULT ── */
   .result-panel {
@@ -395,6 +638,135 @@
   .empty-state-icon { font-size: 32px; margin-bottom: 12px; opacity: 0.4; }
   .empty-state p { font-size: 13px; line-height: 1.6; }
 
+  /* ── GUIDE (how to measure) ── */
+  .guide-section {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+  .guide-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .guide-header .hero-label { margin-bottom: 12px; }
+  .guide-header h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 300;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+  .guide-header h2 em { font-style: italic; }
+  .guide-header p {
+    font-size: 14px;
+    color: var(--dark);
+    max-width: 560px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  .guide-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 18px;
+    margin-bottom: 32px;
+  }
+  .guide-step {
+    background: var(--white);
+    border: 1px solid var(--light);
+    border-radius: 4px;
+    padding: 24px;
+    position: relative;
+  }
+  .guide-step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: var(--black);
+    color: var(--white);
+    border-radius: 50%;
+    font-size: 16px;
+    font-weight: 400;
+    margin-bottom: 14px;
+  }
+  .guide-step-icon {
+    font-size: 28px;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .guide-step h3 {
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    color: var(--black);
+  }
+  .guide-step p {
+    font-size: 13px;
+    color: var(--dark);
+    line-height: 1.7;
+  }
+  .guide-step p + p { margin-top: 8px; }
+  .guide-step .tip {
+    background: var(--hover);
+    border-left: 3px solid var(--black);
+    padding: 10px 12px;
+    margin-top: 12px;
+    font-size: 12px;
+    color: var(--dark);
+    line-height: 1.6;
+    border-radius: 0 2px 2px 0;
+  }
+  .guide-step .tip strong { color: var(--black); font-weight: 500; }
+
+  .guide-example {
+    background: var(--white);
+    border: 1px solid var(--light);
+    border-radius: 4px;
+    padding: 28px;
+  }
+  .guide-example h3 {
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    color: var(--black);
+  }
+  .guide-example p {
+    font-size: 13px;
+    color: var(--dark);
+    line-height: 1.8;
+    margin-bottom: 8px;
+  }
+  .guide-example .num {
+    display: inline-block;
+    min-width: 22px;
+    height: 22px;
+    border: 1px solid var(--black);
+    border-radius: 50%;
+    text-align: center;
+    line-height: 20px;
+    font-size: 11px;
+    font-weight: 500;
+    margin-right: 8px;
+  }
+  .guide-example .formula {
+    background: var(--bg);
+    border-left: 3px solid var(--black);
+    padding: 12px 14px;
+    margin-top: 14px;
+    font-size: 13px;
+    color: var(--black);
+    font-family: 'Montserrat', monospace;
+    line-height: 1.7;
+    border-radius: 0 2px 2px 0;
+  }
+
   /* ── FOOTER ── */
   footer {
     text-align: center;
@@ -403,34 +775,122 @@
     font-size: 11px;
     color: var(--mid);
     letter-spacing: 0.08em;
+    background: var(--white);
   }
   footer a { color: var(--dark); text-decoration: none; }
   footer a:hover { color: var(--black); }
-
-  /* ── NOTE ── */
-  .note {
-    font-size: 11px;
-    color: var(--mid);
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-    margin-top: 4px;
-    line-height: 1.5;
-  }
-  .note::before { content: '※'; flex-shrink: 0; }
 </style>
 </head>
 <body>
 
-<header>
-  <img src="img/logo.png" alt="Tiles Concept">
-  <a href="https://www.tilesconcept.com.ar" target="_blank">Ver tienda →</a>
+<div class="top-strip">Envíos a todo el país · Atención por WhatsApp +54 11 2513-3636</div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="https://www.tilesconcept.com.ar" class="header-logo" aria-label="Tiles Concept">
+      <img src="img/logo.png" alt="Tiles Concept">
+    </a>
+
+    <nav class="header-nav" id="desktopNav">
+      <a href="https://www.tilesconcept.com.ar" class="nav-item">Inicio</a>
+      <a href="https://www.tilesconcept.com.ar/productos/" class="nav-item">Productos</a>
+
+      <div class="nav-item has-dropdown">
+        <span>Por Colección</span><span class="caret">▾</span>
+        <div class="dropdown">
+          <a href="https://www.tilesconcept.com.ar/por-coleccion/cairo/">Cairo</a>
+          <a href="https://www.tilesconcept.com.ar/por-coleccion/koi/">Koi</a>
+          <a href="https://www.tilesconcept.com.ar/por-coleccion/quetzal/">Quetzal</a>
+          <a href="https://www.tilesconcept.com.ar/por-coleccion/giza/">Giza</a>
+          <a href="https://www.tilesconcept.com.ar/por-coleccion/lisboa/">Lisboa</a>
+          <a href="https://www.tilesconcept.com.ar/por-coleccion/memphis/">Memphis</a>
+          <a href="https://www.tilesconcept.com.ar/por-coleccion/morocco/">Morocco</a>
+          <a href="https://www.tilesconcept.com.ar/por-coleccion/doha/">Doha</a>
+          <a href="https://www.tilesconcept.com.ar/por-coleccion/zaya/">Zaya</a>
+        </div>
+      </div>
+
+      <div class="nav-item has-dropdown">
+        <span>Por Color</span><span class="caret">▾</span>
+        <div class="dropdown">
+          <a href="https://www.tilesconcept.com.ar/por-color/blanco/">Blanco</a>
+          <a href="https://www.tilesconcept.com.ar/por-color/gris/">Gris</a>
+          <a href="https://www.tilesconcept.com.ar/por-color/negro/">Negro</a>
+          <a href="https://www.tilesconcept.com.ar/por-color/beige-vison/">Beige / Visón</a>
+          <a href="https://www.tilesconcept.com.ar/por-color/rosa/">Rosa</a>
+          <a href="https://www.tilesconcept.com.ar/por-color/verde/">Verde</a>
+          <a href="https://www.tilesconcept.com.ar/por-color/azul/">Azul</a>
+          <a href="https://www.tilesconcept.com.ar/por-color/celeste/">Celeste</a>
+          <a href="https://www.tilesconcept.com.ar/por-color/bordo/">Bordó</a>
+        </div>
+      </div>
+
+      <div class="nav-item has-dropdown">
+        <span>Categorías</span><span class="caret">▾</span>
+        <div class="dropdown">
+          <a href="https://www.tilesconcept.com.ar/neutros-minimal/">Neutros &amp; Minimal</a>
+          <a href="https://www.tilesconcept.com.ar/clasicos-renovados/">Clásicos Renovados</a>
+          <a href="https://www.tilesconcept.com.ar/color-tendencia/">Color &amp; Tendencia</a>
+        </div>
+      </div>
+
+      <a href="#calculadora" class="nav-item">Calculadora</a>
+    </nav>
+
+    <div class="header-actions">
+      <a href="https://www.tilesconcept.com.ar/account/" class="icon-btn" aria-label="Cuenta">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 4-7 8-7s8 3 8 7"></path></svg>
+      </a>
+      <a href="https://www.tilesconcept.com.ar/carrito/" class="icon-btn" aria-label="Carrito">
+        <svg viewBox="0 0 24 24"><path d="M3 3h2l2.4 12.3a2 2 0 0 0 2 1.7h8.2a2 2 0 0 0 2-1.6L21 8H6"></path><circle cx="9" cy="20" r="1.5"></circle><circle cx="18" cy="20" r="1.5"></circle></svg>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Menú">
+        <svg viewBox="0 0 24 24"><line x1="4" y1="7" x2="20" y2="7"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="17" x2="20" y2="17"></line></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-nav" id="mobileNav">
+    <a href="https://www.tilesconcept.com.ar" class="mobile-link">Inicio</a>
+    <a href="https://www.tilesconcept.com.ar/productos/" class="mobile-link">Productos</a>
+    <details>
+      <summary>Por Colección <span>+</span></summary>
+      <a class="sub-link" href="https://www.tilesconcept.com.ar/por-coleccion/cairo/">Cairo</a>
+      <a class="sub-link" href="https://www.tilesconcept.com.ar/por-coleccion/koi/">Koi</a>
+      <a class="sub-link" href="https://www.tilesconcept.com.ar/por-coleccion/quetzal/">Quetzal</a>
+      <a class="sub-link" href="https://www.tilesconcept.com.ar/por-coleccion/giza/">Giza</a>
+      <a class="sub-link" href="https://www.tilesconcept.com.ar/por-coleccion/lisboa/">Lisboa</a>
+      <a class="sub-link" href="https://www.tilesconcept.com.ar/por-coleccion/memphis/">Memphis</a>
+      <a class="sub-link" href="https://www.tilesconcept.com.ar/por-coleccion/morocco/">Morocco</a>
+      <a class="sub-link" href="https://www.tilesconcept.com.ar/por-coleccion/doha/">Doha</a>
+      <a class="sub-link" href="https://www.tilesconcept.com.ar/por-coleccion/zaya/">Zaya</a>
+    </details>
+    <details>
+      <summary>Por Color <span>+</span></summary>
+      <a class="sub-link" href="https://www.tilesconcept.com.ar/por-color/blanco/">Blanco</a>
+      <a class="sub-link" href="https://www.tilesconcept.com.ar/por-color/gris/">Gris</a>
+      <a class="sub-link" href="https://www.tilesconcept.com.ar/por-color/negro/">Negro</a>
+      <a class="sub-link" href="https://www.tilesconcept.com.ar/por-color/beige-vison/">Beige / Visón</a>
+      <a class="sub-link" href="https://www.tilesconcept.com.ar/por-color/rosa/">Rosa</a>
+      <a class="sub-link" href="https://www.tilesconcept.com.ar/por-color/verde/">Verde</a>
+      <a class="sub-link" href="https://www.tilesconcept.com.ar/por-color/azul/">Azul</a>
+      <a class="sub-link" href="https://www.tilesconcept.com.ar/por-color/celeste/">Celeste</a>
+      <a class="sub-link" href="https://www.tilesconcept.com.ar/por-color/bordo/">Bordó</a>
+    </details>
+    <details>
+      <summary>Categorías <span>+</span></summary>
+      <a class="sub-link" href="https://www.tilesconcept.com.ar/neutros-minimal/">Neutros &amp; Minimal</a>
+      <a class="sub-link" href="https://www.tilesconcept.com.ar/clasicos-renovados/">Clásicos Renovados</a>
+      <a class="sub-link" href="https://www.tilesconcept.com.ar/color-tendencia/">Color &amp; Tendencia</a>
+    </details>
+    <a href="#calculadora" class="mobile-link">Calculadora</a>
+  </div>
 </header>
 
-<div class="hero">
+<div class="hero" id="calculadora">
   <p class="hero-label">Herramienta de compra</p>
   <h1>Calculá tus <em>packs</em></h1>
-  <p>Elegí el modelo y color que buscás, ingresá las medidas de tu pared y te decimos exactamente cuántos packs necesitás.</p>
+  <p>Elegí el modelo y color que buscás, ingresá las medidas de tus paredes y te decimos exactamente cuántos packs necesitás.</p>
 </div>
 
 <div class="main">
@@ -466,25 +926,29 @@
       <div>
         <div class="step-label">
           <span class="step-number">3</span>
-          Medidas de tu pared
+          Medidas de tus paredes
         </div>
 
-        <div class="input-group">
-          <div class="input-row">
-            <div class="field">
-              <label class="field-label">Ancho (m)</label>
-              <input type="number" id="ancho" placeholder="ej: 3.50" min="0" step="0.01" oninput="calcular()">
+        <div class="walls-container" id="wallsContainer"></div>
+        <button type="button" class="btn-add-wall" id="btnAddWall" style="margin-top:14px;">+ Agregar otra pared</button>
+      </div>
+
+      <div>
+        <div class="step-label">
+          <span class="step-number">4</span>
+          Opciones
+        </div>
+        <div class="options-box">
+          <label class="switch-row" for="extraToggle" style="cursor:pointer;">
+            <div class="switch-text">
+              <div class="switch-title">Sumar 10% extra para recortes</div>
+              <div class="switch-desc">Te recomendamos dejarlo activado: cubre cortes, ajustes y posibles errores al colocar. Si preferís comprar la cantidad justa, desactivá esta opción.</div>
             </div>
-            <div class="field">
-              <label class="field-label">Alto (m)</label>
-              <input type="number" id="alto" placeholder="ej: 2.40" min="0" step="0.01" oninput="calcular()">
-            </div>
-          </div>
-          <div class="field">
-            <label class="field-label">Descontar puertas / ventanas (m²) — opcional</label>
-            <input type="number" id="descuento" placeholder="ej: 1.20" min="0" step="0.01" oninput="calcular()">
-          </div>
-          <p class="note">Recomendamos siempre sumar un 10% extra para cortes y ajustes. Ya está incluido en el cálculo.</p>
+            <span class="switch">
+              <input type="checkbox" id="extraToggle" checked>
+              <span class="slider"></span>
+            </span>
+          </label>
         </div>
       </div>
 
@@ -497,7 +961,7 @@
             <div class="result-cell-unit">m²</div>
           </div>
           <div class="result-cell">
-            <div class="result-cell-label">Con 10% extra</div>
+            <div class="result-cell-label" id="lblExtra">Con 10% extra</div>
             <div class="result-cell-value" id="resM2Extra">—</div>
             <div class="result-cell-unit">m²</div>
           </div>
@@ -509,7 +973,7 @@
         </div>
 
         <div class="result-summary">
-          Necesitás <strong id="sumPacks">—</strong> pack(s) de <strong id="sumModel">—</strong> para cubrir <strong id="sumM2">—</strong> m² de pared (incluyendo el 10% de margen para recortes).
+          Necesitás <strong id="sumPacks">—</strong> pack(s) de <strong id="sumModel">—</strong> para cubrir <strong id="sumM2">—</strong> m² <span id="sumMargen">(incluyendo el 10% de margen para recortes)</span>.
         </div>
 
         <div class="result-price-row">
@@ -522,15 +986,115 @@
 
       <div id="emptyState" class="empty-state">
         <div class="empty-state-icon">◻</div>
-        <p>Seleccioná un modelo y color, luego ingresá las medidas de tu pared para ver el resultado.</p>
+        <p>Seleccioná un modelo y color, luego ingresá las medidas de tus paredes para ver el resultado.</p>
       </div>
 
     </div>
   </div>
 </div>
 
+<!-- ── HOW TO MEASURE GUIDE ── -->
+<section class="guide-section" id="comoMedir">
+  <div class="guide-header">
+    <p class="hero-label">Guía paso a paso</p>
+    <h2>Cómo medir tu <em>pared</em></h2>
+    <p>Tomate dos minutos y seguí estos pasos. Está explicado bien fácil, así no te equivocás ni en un número.</p>
+  </div>
+
+  <div class="guide-steps">
+
+    <div class="guide-step">
+      <div class="guide-step-num">1</div>
+      <span class="guide-step-icon">📐</span>
+      <h3>Conseguí un metro</h3>
+      <p>Agarrá un metro de los que se enrollan (el de carpintero o el amarillo de obra). Si no tenés, sirve uno de costura o hasta una huincha de tela.</p>
+      <div class="tip"><strong>Importante:</strong> los números que vas a usar son los <strong>metros (m)</strong>. Por ejemplo: 2,40 m o 3,50 m.</div>
+    </div>
+
+    <div class="guide-step">
+      <div class="guide-step-num">2</div>
+      <span class="guide-step-icon">📏</span>
+      <h3>Medí el ancho</h3>
+      <p>Apoyá el metro pegado al piso, en un costado de la pared. Estiralo bien derechito hasta el otro costado. Mirá hasta dónde llegó.</p>
+      <p>Ese número es el <strong>ancho</strong> de tu pared.</p>
+      <div class="tip"><strong>Ejemplo:</strong> si llegó hasta 350 cm, eso es <strong>3,50 m</strong>.</div>
+    </div>
+
+    <div class="guide-step">
+      <div class="guide-step-num">3</div>
+      <span class="guide-step-icon">📏</span>
+      <h3>Medí el alto</h3>
+      <p>Ahora poné el metro arrancando desde el piso y subí derecho hasta el techo (o hasta donde quieras que terminen los azulejos).</p>
+      <p>Ese número es el <strong>alto</strong> de tu pared.</p>
+      <div class="tip"><strong>Ejemplo:</strong> si llegó hasta 240 cm, eso es <strong>2,40 m</strong>.</div>
+    </div>
+
+    <div class="guide-step">
+      <div class="guide-step-num">4</div>
+      <span class="guide-step-icon">🚪</span>
+      <h3>¿Hay una puerta o ventana?</h3>
+      <p>Si la pared tiene un hueco (puerta, ventana, espejo grande), medí ese hueco también: ancho por alto.</p>
+      <p>Multiplicá esos dos números y anotalos como <strong>descuento</strong>. Así no comprás packs de más.</p>
+      <div class="tip"><strong>Ejemplo:</strong> una ventana de 1,20 m × 1,00 m = <strong>1,20 m² de descuento</strong>.</div>
+    </div>
+
+    <div class="guide-step">
+      <div class="guide-step-num">5</div>
+      <span class="guide-step-icon">📝</span>
+      <h3>Anotá los números</h3>
+      <p>Escribilos en un papel o en el celular así no se te mezclan. Ponele un nombre a cada pared: "Cocina", "Baño", "Living"...</p>
+      <p>Si vas a cubrir más de una pared, hacé lo mismo con cada una.</p>
+      <div class="tip"><strong>Tip:</strong> medí dos veces. Si te da distinto, medí de nuevo. Mejor seguro que arrepentido.</div>
+    </div>
+
+    <div class="guide-step">
+      <div class="guide-step-num">6</div>
+      <span class="guide-step-icon">⌨️</span>
+      <h3>Pasalo a la calculadora</h3>
+      <p>Subí de nuevo a la calculadora. Ingresá el <strong>ancho</strong> y el <strong>alto</strong> de tu primera pared.</p>
+      <p>Si tenés más paredes, tocá <strong>"+ Agregar otra pared"</strong> y cargá la siguiente.</p>
+      <div class="tip"><strong>Importante:</strong> usá una coma para los decimales (3,50) o un punto (3.50). Los dos sirven.</div>
+    </div>
+
+    <div class="guide-step">
+      <div class="guide-step-num">7</div>
+      <span class="guide-step-icon">✂️</span>
+      <h3>Decidí el 10% extra</h3>
+      <p>Te recomendamos dejarlo prendido. Sirve para los recortes que se hacen al colocar, las esquinas y por si te equivocás cortando alguna placa.</p>
+      <p>Si querés ver cuánto sería sin extra, apagalo y mirá la diferencia.</p>
+      <div class="tip"><strong>Por qué importa:</strong> es mejor que te sobre un poquito y no que falte cuando estás colocando.</div>
+    </div>
+
+    <div class="guide-step">
+      <div class="guide-step-num">8</div>
+      <span class="guide-step-icon">🎉</span>
+      <h3>¡Listo!</h3>
+      <p>La calculadora te muestra cuántos packs necesitás y cuánto sale en total.</p>
+      <p>Tocá <strong>"Ir al producto"</strong> para comprarlo. Si tenés dudas, escribinos por WhatsApp al <strong>+54 11 2513-3636</strong> y te ayudamos.</p>
+      <div class="tip"><strong>Importante:</strong> los packs vienen de a 10 placas. La calculadora ya redondea para que te alcance.</div>
+    </div>
+
+  </div>
+
+  <div class="guide-example">
+    <h3>Ejemplo completito</h3>
+    <p><span class="num">1</span>Querés poner azulejos en la pared de la cocina, atrás de la mesada.</p>
+    <p><span class="num">2</span>Medís el ancho de la pared: <strong>3,00 m</strong>.</p>
+    <p><span class="num">3</span>Medís el alto que querés cubrir (de la mesada al techo): <strong>1,20 m</strong>.</p>
+    <p><span class="num">4</span>No hay ventanas en esa pared, así que el descuento queda en <strong>0</strong>.</p>
+    <p><span class="num">5</span>También querés cubrir una segunda pared chica: <strong>1,50 m × 1,20 m</strong>.</p>
+    <p><span class="num">6</span>En la calculadora ponés la primera pared, tocás "+ Agregar otra pared" y cargás la segunda.</p>
+    <div class="formula">
+      Pared 1: 3,00 × 1,20 = 3,60 m²<br>
+      Pared 2: 1,50 × 1,20 = 1,80 m²<br>
+      <strong>Total: 5,40 m²</strong> (con 10% extra: 5,94 m²)
+    </div>
+    <p style="margin-top:14px;">La calculadora te dice cuántos packs necesitás según el modelo que elegiste. ¡Y listo!</p>
+  </div>
+</section>
+
 <footer>
-  <p>© 2025 <a href="https://www.tilesconcept.com.ar" target="_blank">Tiles Concept</a> · Azulejos autoadhesivos 3D</p>
+  <p>© 2025 <a href="https://www.tilesconcept.com.ar" target="_blank">Tiles Concept</a> · Azulejos autoadhesivos 3D · <a href="https://wa.me/541125133636" target="_blank">WhatsApp</a> · <a href="mailto:admin@tilesconceptar.com">admin@tilesconceptar.com</a></p>
 </footer>
 
 <script>
@@ -583,10 +1147,19 @@ const PRODUCTOS = [
 const MODELOS = [...new Set(PRODUCTOS.map(p => p.modelo))];
 let selectedProduct = null;
 let activeModel = MODELOS[0];
+let walls = [{ id: 1, ancho: '', alto: '', descuento: '' }];
+let nextWallId = 2;
 
 function init() {
   renderTabs();
   renderColors(activeModel);
+  renderWalls();
+
+  document.getElementById('btnAddWall').addEventListener('click', addWall);
+  document.getElementById('extraToggle').addEventListener('change', calcular);
+  document.getElementById('menuToggle').addEventListener('click', () => {
+    document.getElementById('mobileNav').classList.toggle('open');
+  });
 }
 
 function renderTabs() {
@@ -647,35 +1220,97 @@ function updatePreview() {
     </div>`;
 }
 
+function renderWalls() {
+  const container = document.getElementById('wallsContainer');
+  container.innerHTML = walls.map((w, i) => `
+    <div class="wall-card" data-id="${w.id}">
+      <div class="wall-card-header">
+        <div class="wall-card-title">Pared ${i + 1}</div>
+        ${walls.length > 1 ? `<button type="button" class="wall-remove" onclick="removeWall(${w.id})">✕ Eliminar</button>` : ''}
+      </div>
+      <div class="input-row">
+        <div class="field">
+          <label class="field-label">Ancho (m)</label>
+          <input type="number" inputmode="decimal" placeholder="ej: 3.50" min="0" step="0.01" value="${w.ancho}" oninput="updateWall(${w.id}, 'ancho', this.value)">
+        </div>
+        <div class="field">
+          <label class="field-label">Alto (m)</label>
+          <input type="number" inputmode="decimal" placeholder="ej: 2.40" min="0" step="0.01" value="${w.alto}" oninput="updateWall(${w.id}, 'alto', this.value)">
+        </div>
+      </div>
+      <div class="field">
+        <label class="field-label">Descontar puertas / ventanas (m²) — opcional</label>
+        <input type="number" inputmode="decimal" placeholder="ej: 1.20" min="0" step="0.01" value="${w.descuento}" oninput="updateWall(${w.id}, 'descuento', this.value)">
+      </div>
+    </div>
+  `).join('');
+}
+
+function updateWall(id, field, value) {
+  const w = walls.find(x => x.id === id);
+  if (w) {
+    w[field] = value;
+    calcular();
+  }
+}
+
+function addWall() {
+  walls.push({ id: nextWallId++, ancho: '', alto: '', descuento: '' });
+  renderWalls();
+  calcular();
+}
+
+function removeWall(id) {
+  walls = walls.filter(w => w.id !== id);
+  if (walls.length === 0) {
+    walls.push({ id: nextWallId++, ancho: '', alto: '', descuento: '' });
+  }
+  renderWalls();
+  calcular();
+}
+
 function formatARS(n) {
   return '$' + Math.round(n).toLocaleString('es-AR');
 }
 
 function calcular() {
-  const ancho = parseFloat(document.getElementById('ancho').value);
-  const alto = parseFloat(document.getElementById('alto').value);
-  const descuento = parseFloat(document.getElementById('descuento').value) || 0;
   const resultPanel = document.getElementById('resultPanel');
   const emptyState = document.getElementById('emptyState');
+  const aplicarExtra = document.getElementById('extraToggle').checked;
 
-  if (!selectedProduct || !ancho || !alto || ancho <= 0 || alto <= 0) {
+  let neto = 0;
+  let hayDatos = false;
+  for (const w of walls) {
+    const a = parseFloat(w.ancho);
+    const h = parseFloat(w.alto);
+    const d = parseFloat(w.descuento) || 0;
+    if (a > 0 && h > 0) {
+      hayDatos = true;
+      neto += Math.max(0, (a * h) - d);
+    }
+  }
+
+  if (!selectedProduct || !hayDatos || neto <= 0) {
     resultPanel.classList.remove('visible');
     emptyState.style.display = 'block';
     return;
   }
 
   const p = selectedProduct;
-  const neto = Math.max(0, (ancho * alto) - descuento);
-  const conExtra = neto * 1.10;
+  const conExtra = aplicarExtra ? neto * 1.10 : neto;
   const packs = Math.ceil(conExtra / p.cobertura);
   const total = packs * p.precio;
 
   document.getElementById('resM2').textContent = neto.toFixed(2);
   document.getElementById('resM2Extra').textContent = conExtra.toFixed(2);
+  document.getElementById('lblExtra').textContent = aplicarExtra ? 'Con 10% extra' : 'Sin extra';
   document.getElementById('resPacks').textContent = packs;
   document.getElementById('sumPacks').textContent = packs;
   document.getElementById('sumModel').textContent = p.modelo + ' ' + p.color;
   document.getElementById('sumM2').textContent = conExtra.toFixed(2);
+  document.getElementById('sumMargen').textContent = aplicarExtra
+    ? '(incluyendo el 10% de margen para recortes)'
+    : '(sin margen extra)';
   document.getElementById('resTotal').textContent = formatARS(total);
   document.getElementById('btnBuy').href = p.url;
 
